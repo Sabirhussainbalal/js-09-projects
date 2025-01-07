@@ -41,7 +41,7 @@ Welcome to my repository of **09 JavaScript beginner projects**! These projects 
 
 ## Tools and Technologies
 
-- **HTM5**
+- **HTML**
 - **CSS**
 - **JavaScript**
 - **API Integration**
