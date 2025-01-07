@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Math Puzzle Game</title>
+    <script src="https://cdn.lordicon.com/lordicon.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      .bg {
+        background-image: url("bg.jpg");
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+        width: 100vw;
+        height: 100vh;
+        position: absolute;
+      }
+
+      body {
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: "Poppins", sans-serif;
+      }
+
+      .container {
+        width: 500px;
+        height: 385px;
+        border: 4px solid #842d00;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        gap: 20px;
+        position: relative;
+        box-shadow: inset 0px 0px 20px 1px black;
+      }
+
+      .blur_con {
+        filter: blur(2px);
+      }
+
+      .blur_bg {
+        filter: blur(20px);
+      }
+
+      .titles {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        padding: 0 5px;
+      }
+
+      .titles .title,
+      .scores {
+        font-size: 1rem;
+        font-weight: 600;
+        text-align: center;
+      }
+
+      .title {
+        background-color: #842d00;
+        border: 2px solid #842d00;
+        width: max-content;
+        height: max-content;
+        padding: 5px 10px;
+        transform: translateX(20px) translateY(-10px);
+      }
+
+      .scores {
+        gap: 5px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .one,
+      .two,
+      .three,
+      .four,
+      .five {
+        fill: red;
+        margin: 1px;
+      }
+
+      .main {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        font-weight: bolder;
+      }
+
+      .hints {
+        display: flex;
+        gap: 5px;
+      }
+
+      .hint {
+        border: 2px solid #842d00;
+        padding: 5px 10px;
+        background-color: #ff8a00;
+      }
+
+      .hint_started {
+        cursor: pointer;
+      }
+
+      .time {
+        border: 2px solid #842d00;
+        background-color: #ff8a00;
+        padding: 5px 12px;
+      }
+
+      .result {
+        font-weight: bold;
+        border: 2px solid #842d00;
+        padding: 5px 12px;
+      }
+
+      .buttons {
+        gap: 40px;
+        position: absolute;
+        bottom: 0;
+        margin: 5px;
+      }
+
+      button {
+        border: 2px solid #842d00;
+        background-color: #ff8a00;
+        font-weight: bold;
+        padding: 5px 12px;
+        cursor: pointer;
+        list-style: none;
+        color: black;
+      }
+
+      .started {
+        background-color: #ff88009d;
+        border: 1px solid #842d00;
+        cursor: default;
+        color: rgba(0, 0, 0, 0.661);
+      }
+
+      .broken {
+        fill: rgba(255, 0, 0, 0.542);
+      }
+
+      .flex {
+        display: flex;
+        gap: 5px;
+      }
+
+      .confirm {
+        position: absolute;
+        background-color: #ffffff;
+        width: 250px;
+        height: 150px;
+        overflow: hidden;
+        box-shadow: 0px 0px 20px 1px black;
+        display: none;
+      }
+
+      .confirm .head {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        background-color: #efefef;
+        align-items: center;
+        padding: 5px;
+        height: 30px;
+        font-size: 14px;
+      }
+
+      .confirm .body {
+        width: 100%;
+        height: calc(100% - 30px);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        font-size: 12px;
+      }
+
+      .body .msg {
+        padding: 10px;
+      }
+
+      .line {
+        width: 100%;
+        height: 9px;
+        border-radius: 25px;
+        border: 1px solid black;
+        overflow: hidden;
+        display: flex;
+        position: relative;
+      }
+
+      .lvl {
+        width: 20%;
+        height: 100%;
+        cursor: pointer;
+        position: relative;
+        z-index: 2;
+      }
+
+      .line::before {
+        content: "";
+        width: 0;
+        height: 100%;
+        position: absolute;
+        background-color: #ff8a00;
+      }
+
+      .break_level_line::before {
+        width: 0;
+      }
+      .break_high_score_line::before {
+        width: 0;
+        cursor: pointer;
+      }
+
+      .confirm button {
+        color: white;
+        font-weight: normal;
+        border: none;
+      }
+
+      #yes {
+        background-color: #038c5a;
+      }
+
+      #no {
+        background-color: #d93223;
+      }
+
+      #cancel_dia {
+        cursor: pointer;
+      }
+      #cancel_dia:hover {
+        transform: scale(0.9);
+      }
+
+      .confirm button:hover {
+        transform: scale(1.1);
+      }
+
+      .messages div {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 10px 20px;
+        margin: 10px;
+        border-radius: 8px;
+        font-size: 1.2em;
+        font-weight: bold;
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        color: #fff;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        top: 10%;
+      }
+
+      /* The 'animated' class overrides visibility */
+      .messages .animated {
+        visibility: visible;
+        opacity: 1;
+        animation: bounceIn 0.6s ease, fadeOut 1.8s 1.6s ease forwards;
+      }
+
+      /* Unique animations for each message */
+      .score_inc {
+        background: linear-gradient(90deg, #4caf50, #66bb6a);
+      }
+
+      .score_dec {
+        background: linear-gradient(90deg, #e57373, #f44336);
+      }
+
+      #next_msg {
+        background: linear-gradient(90deg, #4caf50, #66bb6a);
+      }
+
+      .level_inc {
+        background: linear-gradient(90deg, #ffa726, #fb8c00);
+      }
+
+      .level_dec {
+        background: linear-gradient(90deg, #bdbdbd, #9e9e9e);
+      }
+
+      .high_inc {
+        background: linear-gradient(90deg, #42a5f5, #1e88e5);
+      }
+
+      .win {
+        background: linear-gradient(90deg, #ab47bc, #8e24aa);
+      }
+
+      /* Animation definitions */
+      @keyframes bounceIn {
+        0%,
+        20%,
+        50%,
+        80%,
+        100% {
+          transform: translateX(-50%) translateY(0);
+        }
+        40% {
+          transform: translateX(-50%) translateY(-30px);
+        }
+        60% {
+          transform: translateX(-50%) translateY(-15px);
+        }
+      }
+
+      @keyframes fadeOut {
+        0% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0;
+        }
+      }
+
+      .red {
+        border: 3px solid red;
+      }
+
+      .profile {
+        width: 250px;
+        height: 300px;
+        position: absolute;
+        display: none;
+      }
+
+      .profile .hd {
+        width: 100%;
+        height: 65%;
+        background-color: #2c3a47;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        font-size: 10px;
+        color: rgba(255, 255, 255, 0.776);
+        gap: 10px;
+      }
+
+      .hd img {
+        width: 55px;
+        height: 55px;
+        border-radius: 50%;
+        background-image: linear-gradient(351deg, #a100ffff 0%, #71c4ffff 100%);
+        padding: 2px;
+      }
+
+      .profile .bd {
+        width: 100%;
+        height: 35%;
+        background-color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 10px;
+        color: #2c3a47;
+      }
+
+      .contacts {
+        width: 85%;
+        height: 25px;
+        gap: 5px;
+        overflow: hidden;
+        display: none;
+      }
+
+      .contact {
+        width: 20%;
+        height: 100%;
+        transition: transform 0.5s ease-in-out; /* Add transition here */
+        background-size: contain;
+        background-repeat: no-repeat;
+      }
+
+      .contacts .contact:nth-child(1) {
+        background-image: url(fb.png);
+        transform: translateY(-26px); /* Initial state */
+      }
+
+      .contacts .contact:nth-child(2) {
+        background-image: url(ins.png);
+        transform: translateY(26px);
+      }
+
+      .contacts .contact:nth-child(3) {
+        background-image: url(upw.jpg);
+        transform: translateY(-26px);
+      }
+
+      .contacts .contact:nth-child(4) {
+        background-image: url(st.png);
+        transform: translateY(26px);
+      }
+
+      .contacts .contact:nth-child(5) {
+        background-image: url(dis.jpg);
+        transform: translateY(-26px);
+      }
+
+      .contacts .contact:nth-child(6) {
+        background-image: url(git.png);
+        transform: translateY(26px);
+      }
+
+      .contact_button {
+        border: 2px solid #d9322388;
+        padding: 5px 10px;
+        cursor: pointer;
+        transition: all 0.4s ease-in-out;
+        color: #d93223dc;
+        box-shadow: inset 0px 0px 10px 1px #d93223dc;
+      }
+
+      .contact_button:hover {
+        background-color: #d93223dc;
+        border: 2px solid #d9322388;
+        color: white;
+        box-shadow: 0px 0px 10px 1px #d93223dc;
+      }
+
+      .contacts .contact.zero {
+        transform: translateY(0); /* Smooth transition to neutral position */
+      }
+
+      .table-container {
+        width: 240px;
+        max-height: 100px;
+        overflow: auto;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        background: linear-gradient(145deg, #ffffff, #e6e6e6);
+      }
+
+      /* Table */
+      .stats-table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: center;
+        font-family: "Arial", sans-serif;
+        font-size: 12px;
+      }
+
+      /* Table Head */
+      .stats-table thead {
+        background: #ff8a00;
+        color: white;
+        position: sticky;
+        top: 0;
+        z-index: 1;
+      }
+
+      /* Table Rows */
+      .stats-table tbody tr {
+        background: #f9f9f9;
+      }
+
+      .stats-table tbody tr:nth-child(even) {
+        background: #f1f1f1;
+      }
+
+      .stats-table th,
+      .stats-table td {
+        padding: 8px;
+        border: 1px solid #ddd;
+      }
+
+      .stats-table th {
+        font-weight: bold;
+      }
+
+      /* Scrollbar Styling */
+      .table-container::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+
+      .table-container::-webkit-scrollbar-thumb {
+        background: #ff8a00;
+        border-radius: 3px;
+      }
+
+      .table-container::-webkit-scrollbar-track {
+        background: #e6e6e6;
+      }
+
+      /* Responsive Styling */
+      @media (max-width: 480px) {
+        .stats-table th,
+        .stats-table td {
+          font-size: 10px;
+          padding: 5px;
+        }
+      }
+
+      .cn_pr {
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin: 10px;
+        color: white;
+        font-weight: bolder;
+        cursor: pointer;
+        transition: transform 0.5s ease-in-out;
+      }
+
+      .cn_pr:hover {
+        transform: rotate(360deg) scale(1.2);
+        color: #ff8a00;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bg"></div>
+    <div class="container">
+      <div class="titles">
+        <div class="scores">
+          <div class="score flex">
+            Score:
+            <div id="score">0</div>
+          </div>
+          <div class="level flex">
+            Level:
+            <div id="level">1</div>
+          </div>
+          <div class="break_level_line line">
+            <div class="lvl" title="Level 1"></div>
+            <div class="lvl" title="Level 2"></div>
+            <div class="lvl" title="Level 3"></div>
+            <div class="lvl" title="Level 4"></div>
+            <div class="lvl" title="Level 5"></div>
+          </div>
+          <div class="high flex">
+            High:
+            <div id="high">00</div>
+          </div>
+          <div class="break_high_score_line line"></div>
+        </div>
+        <div class="title">Math Puzzle</div>
+        <div class="life">
+          <!-- 1 -->
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            class="bi bi-heart-fill one"
+            viewBox="0 0 16 16"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314"
+            />
+          </svg>
+          <!-- 2 -->
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            class="bi bi-heart-fill two"
+            viewBox="0 0 16 16"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314"
+            />
+          </svg>
+          <!-- 3 -->
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            class="bi bi-heart-fill three"
+            viewBox="0 0 16 16"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314"
+            />
+          </svg>
+          <!-- 4 -->
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            class="bi bi-heart-fill four"
+            viewBox="0 0 16 16"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314"
+            />
+          </svg>
+          <!-- 5 -->
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            class="bi bi-heart-fill five"
+            viewBox="0 0 16 16"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314"
+            />
+          </svg>
+        </div>
+      </div>
+      <div class="main">
+        <div class="question">0</div>
+        <div class="hints">
+          <div class="hint one">0</div>
+          <div class="hint two">0</div>
+          <div class="hint three">0</div>
+          <div class="hint four">0</div>
+        </div>
+        <div class="time flex">
+          Time:
+          <div id="time">0</div>
+          Seconds
+        </div>
+      </div>
+      <div class="ends">
+        <div class="result">----</div>
+      </div>
+      <div class="buttons flex">
+        <button id="start">Start Game</button>
+        <button id="reset">Reset Game</button>
+      </div>
+    </div>
+    <div class="confirm">
+      <!-- Head -->
+      <div class="head">
+        <div class="text">Confirm</div>
+        <div id="cancel_dia">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            class="bi bi-x-lg"
+            viewBox="0 0 16 16"
+          >
+            <path
+              d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"
+            />
+          </svg>
+        </div>
+      </div>
+      <!-- Body -->
+      <div class="body">
+        <div class="msg">Are you sure you want to reset the game?</div>
+        <div class="conform_btn flex">
+          <button id="yes">Yes</button>
+          <button id="no">No</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="messages">
+      <div class="score_inc">+1</div>
+      <div class="score_dec" id="heartsrmg">-1 💔</div>
+      <div id="next_msg">Hello! New message!</div>
+      <div class="level_inc">Boom! Level Up! 🚀</div>
+      <div class="level_dec">Uh-oh, Level Down! 😢</div>
+      <div class="high_inc">New High Score! You're a legend! 🏆</div>
+      <div class="win">Winner Winner, Chicken Dinner! 🍗</div>
+    </div>
+
+    <div class="profile">
+      <div class="hd">
+        <img
+          src="https://scontent.fhdd1-1.fna.fbcdn.net/v/t39.30808-6/449171193_842824037718820_8031581455512796757_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=0W-d0gpozmoQ7kNvgHaRSLF&_nc_zt=23&_nc_ht=scontent.fhdd1-1.fna&_nc_gid=AeoQ2J2sUon7GV_-xqqiU42&oh=00_AYCkBth9cc-Gza3MnM5W2jF55X4n2DUQyYkSzaZMboqfyg&oe=67683D2C"
+          alt="Avatar"
+        />
+        <div class="nm">Sabir Hussain Balal</div>
+        <div class="contacts">
+          <div class="contact"></div>
+          <div class="contact"></div>
+          <div class="contact"></div>
+          <div class="contact"></div>
+          <div class="contact"></div>
+          <div class="contact"></div>
+        </div>
+        <div class="contact_button">Contact With Me</div>
+      </div>
+      <div class="bd">
+        <div class="table-container">
+          <table class="stats-table">
+            <thead>
+              <tr>
+                <th>Level</th>
+                <th>High Score</th>
+                <th>Total Time</th>
+                <th>Total Score</th>
+                <th>Total Deaths</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td id="level_is">0</td>
+                <td id="high_is">0</td>
+                <td id="time_is">0</td>
+                <td id="total_is">0</td>
+                <td id="death_is">0</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="cancel_profile">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          fill="currentColor"
+          class="bi bi-x-lg cn_pr"
+          viewBox="0 0 16 16"
+          title="Cancel Chart"
+        >
+          <path
+            d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"
+          />
+        </svg>
+      </div>
+    </div>
+
+    <script>
+      let questionEl = document.querySelector(".question");
+      let hintsEl = document.querySelectorAll(".hint");
+      let heartsbreak = document.querySelectorAll(".bi");
+      let resultEl = document.querySelector(".result");
+      let timeEl = document.getElementById("time");
+      let scoreEl = document.getElementById("score");
+      let levelEl = document.getElementById("level");
+      let highEl = document.getElementById("high");
+      let startButton = document.getElementById("start");
+      let resetButton = document.getElementById("reset");
+      let heartsEl = document.getElementById("heartsrmg");
+      let lastresult = 0;
+      let score = 0;
+      let level = 1;
+      let highscore = 0;
+      let life = 5;
+      let show_high = true;
+      let correct_ans = "";
+      let tem_time = 0;
+      let end = false;
+      let uniqueCounter = 0;
+      let high_brk = 0;
+      let high_show = true;
+      let death = 0;
+      let total_score = 0;
+      let startTime = 0;
+      let endTime = 0;
+      let totalTimeSeconds = 0;
+      let totalTimeMinutes = 0;
+
+      const showMessage = (selector) => {
+        const message = document.querySelector(selector);
+        if (message) {
+          // Remove the animation class to reset
+          message.classList.remove("animated");
+
+          // Force reflow to restart the animation
+          void message.offsetWidth;
+
+          // Add the animation class to trigger it again
+          message.classList.add("animated");
+        }
+      };
+
+      const yes = () => {
+        endTime = Date.now();
+        totalTimeSeconds = (endTime - startTime) / 1000;
+
+        // Convert to minutes
+        totalTimeMinutes = (totalTimeSeconds / 60).toFixed(2);
+
+        show_chart();
+
+        document.querySelector(".confirm").style.display = "none";
+
+        if (life === 0) {
+          document.querySelector(".score_dec").textContent = "Game Over";
+        } else {
+          document.querySelector(".score_dec").textContent = "Game Reset";
+        }
+        showMessage(".score_dec");
+        hintsEl.forEach((hint, index) => {
+          hint.textContent = 0;
+          hint.classList.remove("started");
+          hint.classList.remove("red");
+          hint.classList.remove("hint_started");
+        });
+
+        show_high = true;
+        heartsbreak.forEach((heartsbreak, index) => {
+          heartsbreak.classList.remove("broken");
+        });
+
+        end = false;
+        document.removeEventListener("click", handleHintClick);
+        setBeforeWidth(".break_level_line", "0", 2, "#ff8a00");
+        setBeforeWidth(".break_high_score_line", "0", 2, "#ff8a00");
+        document.querySelector(".profile").style.display = "block";
+        clearInterval(timer);
+        high_show = true;
+        questionEl.textContent = "0";
+        timeEl.textContent = 0;
+        high_brk = 0;
+      };
+
+      const show_chart = () => {
+        document.getElementById("level_is").textContent = level;
+        document.getElementById("high_is").textContent = highscore;
+        document.getElementById("time_is").textContent = `${totalTimeMinutes}m`;
+        document.getElementById("total_is").textContent = total_score;
+        document.getElementById("death_is").textContent = death;
+      };
+
+      const chart = () => {
+        document.querySelector(".container").classList.remove("blur_con");
+        document.querySelector(".bg").classList.remove("blur_bg");
+        resetButton.disabled = false;
+        startButton.innerText = "Start Game";
+        startButton.disabled = false;
+        resetButton.classList.remove("started");
+        startButton.classList.remove("started");
+        document.querySelector(".profile").style.display = "none";
+        score = 0;
+        level = 1;
+        life = 5;
+        death = 0;
+        total_score = 0;
+        highscore = highscore;
+        scoreEl.textContent = score;
+        levelEl.textContent = level;
+        startTime = 0;
+        endTime = 0;
+        totalTimeSeconds = 0;
+        totalTimeMinutes = 0;
+      };
+
+      document.querySelector(".cn_pr").addEventListener("click", chart);
+
+      function setBeforeWidth(
+        selector,
+        width,
+        time = 0,
+        backgroundColor = null
+      ) {
+        const element = document.querySelector(selector);
+
+        if (!element) {
+          console.error(`Element with selector "${selector}" not found.`);
+          return;
+        }
+
+        // Increment the counter for generating a unique class name
+        const uniqueClass = `before-width-${uniqueCounter++}`;
+        element.classList.add(uniqueClass);
+
+        // Get or create a stylesheet
+        let styleSheet = document.querySelector("#dynamic-styles");
+        if (!styleSheet) {
+          styleSheet = document.createElement("style");
+          styleSheet.id = "dynamic-styles";
+          document.head.appendChild(styleSheet);
+        }
+
+        // Generate rules for initial width, transition, and final width
+        const initialRule = `
+    .${uniqueClass}::before {
+        width: 0;
+        transition: width ${time}s ease-in-out, background-color ${time}s ease-in-out;
+        ${backgroundColor ? `background-color: ${backgroundColor};` : ""}
+    }
+  `;
+        const finalRule = `
+    .${uniqueClass}::before {
+        width: ${width};
+        ${backgroundColor ? `background-color: ${backgroundColor};` : ""}
+    }
+  `;
+
+        // Insert initial rule
+        styleSheet.sheet.insertRule(
+          initialRule,
+          styleSheet.sheet.cssRules.length
+        );
+
+        // Set width (and optional background color) after a small delay to trigger animation
+        setTimeout(() => {
+          styleSheet.sheet.insertRule(
+            finalRule,
+            styleSheet.sheet.cssRules.length
+          );
+        }, 10);
+      }
+
+      const updateHearts = () => {
+        // Get all heart elements
+        const hearts = document.querySelectorAll(".life svg");
+
+        // Loop through each heart
+        hearts.forEach((heart, index) => {
+          if (index >= life) {
+            heart.classList.add("broken");
+            heartsEl.textContent = "💔";
+          } else {
+            heart.classList.remove("broken");
+            heartsEl.textContent = "❤";
+          }
+          if (life === 0) {
+            heartsEl.textContent = "Game Over 💔";
+            end = true;
+          }
+          if (life < 5) {
+            showMessage(".score_dec");
+          }
+        });
+      };
+
+      const generateQuestion = () => {
+        let num1 = Math.floor(Math.random() * 10) + 1; // Use let for reassigning later
+        let num2 = Math.floor(Math.random() * 10) + 1; // Use let for reassigning later
+        let operator = ""; // Change const to let
+
+        if (operator === "/") {
+          while (num1 % num2 !== 0) {
+            num1 = Math.floor(Math.random() * 10) + 1;
+            num2 = Math.floor(Math.random() * 10) + 1;
+          }
+        }
+
+        // Levels - , + , * , / Last Question
+        if (level === 1) {
+          operator = "-";
+        } else if (level === 2) {
+          operator = "+";
+        } else if (level === 3) {
+          operator = "*";
+        } else if (level === 4) {
+          operator = "/";
+        } else if (level === 5) {
+          operator = "/";
+        } else if (level === 6) {
+          yes();
+          startButton.disabled = true;
+          resetButton.disabled = true;
+          resetButton.classList.add("started");
+          startButton.classList.add("started");
+          setTimeout(() => {}, 2000);
+        }
+
+        const levelPercentage = (level / 5) * 100;
+        setBeforeWidth(".break_level_line", `${levelPercentage}%`, 2);
+
+        const highPercentage = (score / highscore) * 100;
+
+        if (high_show) {
+          setBeforeWidth(".break_high_score_line", `${highPercentage}%`, 2);
+        }
+
+        // Handle background color when percentage is 100
+        if (highPercentage === 100) {
+          high_brk++;
+          if (high_brk === 2) {
+            setBeforeWidth(".break_high_score_line", "100%", 2, "green");
+            high_show = false;
+          }
+        }
+
+        if (levelPercentage === 100) {
+          setBeforeWidth(".break_level_score_line", "100%", 2, "green");
+        }
+
+        const question = `${num1} ${operator} ${num2}`;
+        const result = eval(`${num1} ${operator} ${num2}`);
+
+        return [question, result]; // Return as an array
+      };
+
+      const showQuestion = () => {
+        clearInterval(timer); // Ensure the timer is cleared
+        const [question, result] = generateQuestion();
+        questionEl.textContent = question;
+
+        hintsEl.forEach((hint, index) => {
+          hint.textContent = Math.floor(Math.random() * 10) + 1;
+          if (hint.textContent === result) {
+            hint.textContent = Math.floor(Math.random() * 10) + 1;
+          }
+        });
+
+        const hintIndex = Math.floor(Math.random() * hintsEl.length);
+        hintsEl[hintIndex].textContent = result;
+        lastresult = result;
+        correct_ans = hintsEl[hintIndex];
+        updateTime(); // Start the timer for the new question
+      };
+
+      const checkAnswer = (answer) => {
+        answer = parseFloat(answer);
+        if (answer === lastresult) {
+          resultEl.textContent = "Correct!";
+          score++;
+          total_score++;
+          if (life < 5) {
+            life++;
+          }
+          showMessage(".score_inc");
+
+          scoreEl.textContent = score;
+        } else {
+          resultEl.textContent = "Wrong!";
+          score--;
+          life--;
+          death++;
+
+          scoreEl.textContent = score;
+          correct_ans.classList.add("red");
+          showMessage(".score_dec");
+        }
+
+        if (score > highscore) {
+          highscore = score;
+          highEl.textContent = highscore;
+          if (show_high) {
+            showMessage(".high_inc");
+            show_high = false;
+          }
+        }
+
+        if (score >= level * 5) {
+          level++;
+          levelEl.textContent = level;
+          showMessage(".level_inc");
+        }
+
+        if (score < 0) {
+          score = 0;
+          scoreEl.textContent = score;
+        }
+
+        updateHearts();
+
+        if (end) {
+          yes();
+          setTimeout(() => {}, 2000);
+        } else {
+          setTimeout(() => {
+            showQuestion();
+            updateTime();
+            hintsEl.forEach((hint, index) => {
+              hint.classList.remove("started");
+              hint.classList.remove("red");
+            });
+            resultEl.textContent = "----";
+          }, 2000);
+        }
+      };
+
+      let timer; // Global timer variable
+
+      const updateTime = () => {
+        clearInterval(timer); // Clear any existing timer
+        timeEl.textContent = 15;
+
+        timer = setInterval(() => {
+          timeEl.textContent--;
+          if (timeEl.textContent === "0") {
+            clearInterval(timer); // Stop the timer at 0
+            checkAnswer(-1); // Consider calling a fail-safe for no selection
+          }
+        }, 1000);
+      };
+
+      let isClickFrozen = false; // Track if clicks are currently frozen
+      const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+      const handleHintClick = async (event) => {
+        if (isClickFrozen) return; // Prevent action if clicks are frozen
+
+        // Check if the clicked element has the 'hint' class
+        if (event.target.classList.contains("hint")) {
+          isClickFrozen = true; // Freeze clicks
+
+          hintsEl.forEach((hint) => {
+            hint.classList.add("started");
+          });
+          event.target.classList.remove("started");
+          clearInterval(timer);
+          checkAnswer(event.target.textContent); // Your custom logic
+          await delay(2000); // Wait for 2 seconds
+          isClickFrozen = false;
+        }
+      };
+
+      // Start with Start Button
+      startButton.addEventListener("click", async function () {
+        startTime = Date.now();
+        this.disabled = true;
+        startButton.innerText = "Game Started";
+        startButton.classList.add("started");
+
+        hintsEl.forEach((hint, index) => {
+          hint.classList.add("hint_started");
+        });
+
+        showQuestion();
+        updateTime();
+
+        // Attach the event listener
+
+        document.addEventListener("click", handleHintClick);
+
+        const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+      });
+
+      resetButton.addEventListener("click", function () {
+        this.disabled = true;
+        startButton.disabled = true;
+        resetButton.classList.add("started");
+        startButton.classList.add("started");
+        tem_time = timeEl.textContent;
+        timeEl.textContent = 0;
+        document.querySelector(".score_dec").textContent = "Are you sure?";
+        showMessage(".score_dec");
+
+        document.querySelector(".confirm").style.display = "block";
+        document.querySelector(".container").classList.add("blur_con");
+        document.querySelector(".bg").classList.add("blur_bg");
+
+        const no = () => {
+          document.querySelector(".confirm").style.display = "none";
+          document.querySelector(".container").classList.remove("blur_con");
+          document.querySelector(".bg").classList.remove("blur_bg");
+          document.querySelector(".score_dec").textContent =
+            "Request Cancelled";
+          showMessage(".score_dec");
+          timeEl.textContent = tem_time;
+          resetButton.disabled = false;
+          startButton.disabled = false;
+          resetButton.classList.remove("started");
+          startButton.classList.remove("started");
+        };
+
+        document.getElementById("yes").addEventListener("click", function () {
+          yes();
+        });
+
+        document.getElementById("no").addEventListener("click", function () {
+          no();
+        });
+
+        document
+          .getElementById("cancel_dia")
+          .addEventListener("click", function () {
+            no();
+          });
+      });
+
+      document
+        .querySelector(".contact_button")
+        .addEventListener("click", () => {
+          document.querySelector(".contacts").style.display = "flex";
+          setTimeout(() => {
+            document.querySelectorAll(".contact").forEach((contact) => {
+              contact.classList.add("zero");
+            });
+          }, 100);
+        });
+    </script>
+  </body>
+</html>

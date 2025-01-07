@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Qr Code Generator</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background: #333;
+        color: #d3d3d3;
+      }
+
+      .box {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 2px solid #d3d3d3;
+        flex-direction: column;
+        padding: 10px;
+        gap: 10px;
+        width: 300px;
+      }
+
+      .input {
+        padding: 10px;
+        border: 2px solid #d3d3d3;
+        width: 100%;
+        color: #d3d3d3;
+        background: #333;
+      }
+
+      input:focus {
+        outline: none;
+      }
+
+      .btn {
+        padding: 10px;
+        border: 2px solid #d3d3d3;
+        width: 100%;
+        color: #d3d3d3;
+        background: #333;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+      }
+
+      .btn:hover {
+        color: #333;
+        background-color: aliceblue;
+        font-weight: bold;
+      }
+
+      h1 {
+        text-align: center;
+        margin-bottom: 10px;
+        color: aliceblue;
+      }
+
+      #qrcode {
+        margin-top: 20px;
+      }
+
+      .boxs {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 80vw;
+        height: 80vh;
+      }
+
+      #download {
+        padding: 10px;
+        border: 2px solid #d3d3d3;
+        width: 100%;
+        color: #d3d3d3;
+        background: #333;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+        width: 100%;
+        text-align: center;
+        height: 40px;
+      }
+
+      #download:hover {
+        color: #333;
+        background-color: aliceblue;
+        font-weight: bold;
+      }
+
+      #qrcode {
+        width: 100%; /* Make the QR code container take the full width */
+        height: 100%; /* Make the QR code container take the full height */
+        background-color: #333;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: inset 0px 0px 10px white;
+      }
+
+      .qrbox {
+        width: 300px;
+        background: #1f1f1f;
+        padding: 20px;
+        border-radius: 20px;
+        height: 350px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        position: relative;
+      }
+
+      @media screen and (max-width: 800px) {
+        .boxs {
+          flex-direction: column;
+        }
+      }
+
+      canvas {
+        width: 100% !important;
+        height: 100% !important;
+      }
+
+      .btn_ds {
+        opacity: 0.5;
+        cursor: default;
+        background-color: aliceblue;
+        color: black;
+        font-weight: bold;
+      }
+
+      .btn_ds:hover {
+        color: black;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Qr Code Generator</h1>
+      <div class="boxs">
+        <div class="box">
+          <input
+            type="text"
+            class="input"
+            id="input"
+            placeholder="Enter your text or URL"
+          />
+          <button class="btn" id="generate">Generate</button>
+        </div>
+        <div class="qrbox">
+          <div id="qrcode"></div>
+          <div id="download">DOWNLOAD</div>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <script>
+      let qrcode_url;
+
+      // Generate QR Code
+      const generateQRCode = () => {
+        const text = document.getElementById("input").value.trim(); // Trim spaces
+        const qrCodeContainer = document.getElementById("qrcode");
+
+        // Clear previous QR Code
+        qrCodeContainer.innerHTML = "";
+
+        // Validate input
+        if (!text) {
+          alert("Please enter valid text or a URL!");
+          return;
+        }
+
+        // Create a canvas element
+        const canvas = document.createElement("canvas");
+        canvas.style.width = "100%"; // Set canvas to fill the container
+        canvas.style.height = "100%"; // Set canvas to fill the container
+
+        document.getElementById("generate").innerHTML = "Generating...";
+        document.getElementById("generate").classList.add("btn_ds");
+        document.getElementById("generate").disabled = true;
+
+        // Generate QR Code
+        QRCode.toCanvas(canvas, text, function (error) {
+          if (error) {
+            console.error("Error generating QR Code:", error);
+          } else {
+            console.log("QR Code generated!");
+            // Store the image data URL from the canvas
+            qrcode_url = canvas.toDataURL("image/png");
+
+            // Introduce a delay of 2 or 3 seconds before appending the QR code
+            setTimeout(() => {
+              qrCodeContainer.appendChild(canvas);
+              document.getElementById("generate").innerHTML = "Generate";
+              document.getElementById("generate").disabled = false;
+              document.getElementById("generate").classList.remove("btn_ds");
+            }, 3000); // 3000ms = 3 seconds delay
+          }
+        });
+      };
+
+      document
+        .getElementById("generate")
+        .addEventListener("click", function () {
+          generateQRCode();
+        });
+
+      // Download the generated QR code as an image
+      async function downloadFile(url, filename) {
+        try {
+          const response = await fetch(url);
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+
+          const blob = await response.blob();
+          saveAs(blob, filename); // Using FileSaver.js to save the file
+        } catch (error) {
+          console.error("Error downloading the file:", error);
+        }
+      }
+
+      document.getElementById("download").addEventListener("click", () => {
+        if (!qrcode_url) {
+          alert("Please generate a QR code first!");
+          return;
+        }
+        downloadFile(qrcode_url, "downloaded-file.png");
+      });
+    </script>
+  </body>
+</html>

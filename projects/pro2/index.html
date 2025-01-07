@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GitHub User Data Fetcher</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Italianno&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Italianno", serif;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background-color: #ccccccd3;
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+      }
+      input,
+      button {
+        border: none;
+        padding: 8px 20px;
+        width: 100%;
+        border-style: none;
+      }
+
+      input {
+        height: 100%;
+      }
+
+      input:focus {
+        outline: none;
+      }
+
+      button {
+        background-color: purple;
+        padding: 0 10px;
+        color: white;
+        width: 30%;
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+      }
+
+      button:hover {
+        background-color: rgb(103, 5, 103);
+      }
+
+      button:active {
+        text-decoration: underline;
+      }
+
+      .form {
+        display: flex;
+        border: 2px solid purple;
+        box-shadow: 0px 10px 15px black;
+        width: 50vw;
+      }
+
+      .container {
+        margin-top: 20px;
+        width: 80vw;
+        height: 250px;
+        border: 2px solid gray;
+        overflow: hidden scroll;
+        background-color: white;
+        position: relative;
+      }
+
+      .head {
+        display: flex;
+        margin: 20px;
+        gap: 10px;
+      }
+
+      img {
+        height: 90px;
+        width: 90px;
+        border-radius: 50%;
+      }
+      .go {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        background-color: purple;
+        padding: 5px 10px;
+      }
+
+      .names {
+        margin-top: 20px;
+        font-size: 27px;
+        font-weight: 600;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .username {
+        font-size: 20px;
+        font-weight: 500;
+        text-decoration: underline;
+      }
+
+      .go a {
+        color: white;
+        font-weight: 200;
+        cursor: pointer;
+        text-decoration: none;
+        transition: all 0.2s ease-in-out;
+      }
+
+      .go a:hover {
+        font-weight: bolder;
+        text-decoration: underline;
+      }
+
+      .para {
+        margin: 25px;
+      }
+
+      .title {
+        font-weight: 600;
+        font-size: 25px;
+      }
+
+      .para .p {
+        font-size: 24px;
+        font-weight: 500;
+      }
+
+      .detail {
+        margin: 25px;
+        width: 100%;
+        justify-content: space-evenly;
+        align-items: center;
+        display: flex;
+        gap: 25px;
+      }
+
+      .nu {
+        font-size: 20px;
+      }
+
+      .container {
+        visibility: hidden;
+      }
+
+      .msg {
+        margin: 20px;
+        color: red;
+        font-size: 25px;
+        word-spacing: 20px;
+        font-weight: bold;
+        visibility: hidden;
+      }
+
+      lord-icon {
+        width: 45px;
+        height: 45px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        filter: blur(0px);
+      }
+
+      .blur {
+        filter: blur(5px);
+        transition: all 0.2s ease-in-out;
+      }
+
+      .loader {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Search Github Profile</h1>
+    <div class="form">
+      <input
+        type="text"
+        id="usernameInput"
+        placeholder="Enter GitHub username"
+        size="30"
+      />
+      <button id="fetchButton">Search</button>
+    </div>
+    <div class="msg">Invalid Username:</div>
+    <div class="container">
+      <div class="head blur error">
+        <img src="" alt="" />
+        <div class="names">
+          <div class="name"></div>
+          <div class="username"></div>
+        </div>
+        <div class="go">
+          <a href="#" target="_blank">Check Profile</a>
+        </div>
+      </div>
+      <div class="para blur error">
+        <div class="title">Bio:</div>
+        <div class="p"></div>
+      </div>
+      <div class="detail blur error">
+        <div class="one">
+          <div class="title">Followers:</div>
+          <div class="followers nu">0</div>
+        </div>
+        <div class="two">
+          <div class="title">Following:</div>
+          <div class="following nu">0</div>
+        </div>
+        <div class="three">
+          <div class="title">Public Repos:</div>
+          <div class="public nu">0</div>
+        </div>
+      </div>
+      <lord-icon
+        src="https://cdn.lordicon.com/afixdwmd.json"
+        trigger="loop"
+        style="width: 45px; height: 45px"
+        colors="primary:#800080"
+        class="loader"
+      >
+      </lord-icon>
+    </div>
+    <script src="https://cdn.lordicon.com/lordicon.js"></script>
+
+    <script>
+      let blurElements = document.querySelectorAll(".blur");
+      let AgainblurElements = document.querySelectorAll(".error");
+      document
+        .getElementById("fetchButton")
+        .addEventListener("click", async () => {
+          document.querySelector(".loader").style.display = "block";
+          const username = document
+            .getElementById("usernameInput")
+            .value.trim();
+
+          document.querySelector(".container").style.visibility = "visible";
+
+          if (!username) {
+            document.querySelector(".msg").style.visibility = "visible";
+            document.querySelector(".container").style.visibility = "hidden";
+            document.querySelector(".blur").classList.add("blur");
+            error.message = "Invalid Username";
+            document.querySelector(".loader").style.display = "none";
+            return;
+          }
+
+          const apiUrl = `https://api.github.com/users/${username}`;
+
+          try {
+            const response = await fetch(apiUrl);
+
+            if (!response.ok) {
+              throw new Error(`User not found: ${response.statusText}`);
+            }
+
+            const data = await response.json();
+
+            // Display user data
+
+            document.querySelector(".name").textContent = data.name || "N/A";
+            document.querySelector(".username").textContent =
+              "@" + data.login || "N/A";
+            document.querySelector(".p").textContent = data.bio || "N/A";
+            document.querySelector(".followers").textContent = data.followers;
+            document.querySelector(".following").textContent = data.following;
+            document.querySelector(".public").textContent = data.public_repos;
+            document.querySelector(".go a").href = data.html_url;
+            document.querySelector("img").src = data.avatar_url;
+            document.querySelector(".msg").style.visibility = "hidden";
+            document.querySelector(".container").style.visibility = "visible";
+            for (let i = 0; i < blurElements.length; i++) {
+              blurElements[i].classList.remove("blur");
+            }
+            document.querySelector(".loader").style.display = "none";
+          } catch (error) {
+            document.querySelector(".msg").style.visibility = "visible";
+            document.querySelector(".container").style.visibility = "hidden";
+            for (let i = 0; i < AgainblurElements; i++) {
+              AgainblurElements[i].classList.add("blur");
+            }
+            error.message = "Invalid Username";
+            document.querySelector(".loader").style.display = "none";
+          }
+        });
+    </script>
+  </body>
+</html>

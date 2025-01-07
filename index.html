@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+    <title>JS | 09 beginner projects</title>
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="static/fav/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="static/fav/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="static/fav/favicon-16x16.png"
+    />
+    <link rel="manifest" href="static/fav/site.webmanifest" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Itim&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&family=Yanone+Kaffeesatz:wght@200..700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <nav>
+      <div class="blur"></div>
+      Javascript beginner projects
+    </nav>
+    <main>
+      <img class="main-bg" src="static/hero.jpg" alt="bg" />
+      <img
+        src="static/avatar.jpg"
+        class="animate__animated animate__backInLeft img"
+        alt="Placeholder Image"
+      />
+      <div class="Designer">
+        <span>Hi</span>
+        <br /><span>I am</span><span>Sabir Hussain Balal</span>
+        <div class="names">
+          <div class="animations">
+            <p id="ok">Coderr</p>
+            <span class="job" id="myDiv">Coder</span>
+          </div>
+        </div>
+      </div>
+    </main>
+    <script>
+      const contents = [
+        "Programmer",
+        "Developer",
+        "Designer",
+        "Full Stack Developer",
+      ];
+      let index = 0;
+
+      function changeContent() {
+        const div = document.getElementById("myDiv");
+        div.innerHTML = contents[index];
+        index = (index + 1) % contents.length;
+      }
+
+      setInterval(changeContent, 7000); // Change content every 7 seconds
+    </script>
+
+    <script>
+      const pcontents = [
+        "Programmerr",
+        "Developerr",
+        "Designerr",
+        "Full Stack Developerr",
+      ];
+      let indexing = 0;
+
+      function changeContent() {
+        const div = document.getElementById("ok");
+        div.innerHTML = pcontents[indexing];
+        indexing = (indexing + 1) % pcontents.length;
+      }
+
+      setInterval(changeContent, 7000); // Change content every 7 seconds
+    </script>
+    <!--  -->
+    <div class="hr"></div>
+    <section>
+      <h1>My Javascript Projects</h1>
+      <div class="cards">
+        <!-- 1 -->
+        <div class="card noimg">
+          <img src="static/pro1.PNG" alt="" />
+          <div class="text">
+            <a href="projects/pro1/index.html" target="_blank">Life Timer</a>
+          </div>
+          <div class="bg"></div>
+        </div>
+        <!-- 2 -->
+        <div class="card noimg">
+          <img src="static/pro2.PNG" alt="" />
+          <div class="bg"></div>
+          <div class="text">
+            <a href="projects/pro2/index.html" target="_blank"
+              >GitHub User Data Fetcher</a
+            >
+          </div>
+        </div>
+        <!-- 3 -->
+        <div class="card noimg">
+          <img src="static/pro3.PNG" alt="" />
+          <div class="bg"></div>
+          <div class="text">
+            <a href="projects/pro3/index.html" target="_blank"
+              >Percentage Calculator</a
+            >
+          </div>
+        </div>
+        <!-- 4 -->
+        <div class="card">
+          <img src="static/pro4.PNG" alt="" />
+          <div class="bg"></div>
+          <div class="text">
+            <a href="projects/pro4/index.html" target="_blank"
+              >Math Puzzle Game</a
+            >
+          </div>
+        </div>
+        <!-- 5 -->
+        <div class="card noimg">
+          <img src="static/pro5.PNG" alt="" />
+          <div class="bg"></div>
+          <div class="text">
+            <a href="projects/pro5/index.html" target="_blank">Product Card</a>
+          </div>
+        </div>
+        <!-- 6 -->
+        <div class="card">
+          <img src="static/pro6.PNG" alt="" />
+          <div class="bg"></div>
+          <div class="text">
+            <a href="projects/pro6/index.html" target="_blank"
+              >ColorPalette Pro</a
+            >
+          </div>
+        </div>
+        <!-- 7 -->
+        <div class="card">
+          <img src="static/pro7.PNG" alt="" />
+          <div class="bg"></div>
+          <div class="text">
+            <a href="projects/pro7/index.html" target="_blank"
+              >Qr Code Generator</a
+            >
+          </div>
+        </div>
+        <!-- 8 -->
+        <div class="card">
+          <img src="static/pro8.PNG" alt="" />
+          <div class="bg"></div>
+          <div class="text">
+            <a href="projects/pro8/index.html" target="_blank"
+              >Expence Tracker</a
+            >
+          </div>
+        </div>
+        <!-- 9 -->
+        <div class="card">
+          <img src="static/pro9.PNG" alt="" />
+          <div class="bg"></div>
+          <div class="text">
+            <a href="projects/pro9/index.html" target="_blank"
+              >Password Generator App</a
+            >
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="contacts">
+      <!-- fb -->
+      <div class="contact" title="Facebook">
+        <div
+          class="code"
+          title="Copy Link"
+          onclick="copyText(this)"
+          data-value="facebook"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="24px"
+            viewBox="0 -960 960 960"
+            width="24px"
+            fill="#5f6368"
+          >
+            <path
+              d="M360-240q-33 0-56.5-23.5T280-320v-480q0-33 23.5-56.5T360-880h360q33 0 56.5 23.5T800-800v480q0 33-23.5 56.5T720-240H360Zm0-80h360v-480H360v480ZM200-80q-33 0-56.5-23.5T120-160v-560h80v560h440v80H200Zm160-240v-480 480Z"
+            />
+          </svg>
+        </div>
+      </div>
+      <!-- int -->
+      <div class="contact" title="Instagram">
+        <div
+          class="code"
+          title="Copy Link"
+          onclick="copyText(this)"
+          data-value="instagram"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="24px"
+            viewBox="0 -960 960 960"
+            width="24px"
+            fill="#5f6368"
+          >
+            <path
+              d="M360-240q-33 0-56.5-23.5T280-320v-480q0-33 23.5-56.5T360-880h360q33 0 56.5 23.5T800-800v480q0 33-23.5 56.5T720-240H360Zm0-80h360v-480H360v480ZM200-80q-33 0-56.5-23.5T120-160v-560h80v560h440v80H200Zm160-240v-480 480Z"
+            />
+          </svg>
+        </div>
+      </div>
+      <!-- upwork -->
+      <div class="contact" title="Upwork">
+        <div
+          class="code"
+          title="Copy Link"
+          onclick="copyText(this)"
+          data-value="upwork"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="24px"
+            viewBox="0 -960 960 960"
+            width="24px"
+            fill="#5f6368"
+          >
+            <path
+              d="M360-240q-33 0-56.5-23.5T280-320v-480q0-33 23.5-56.5T360-880h360q33 0 56.5 23.5T800-800v480q0 33-23.5 56.5T720-240H360Zm0-80h360v-480H360v480ZM200-80q-33 0-56.5-23.5T120-160v-560h80v560h440v80H200Zm160-240v-480 480Z"
+            />
+          </svg>
+        </div>
+      </div>
+      <!-- steam -->
+      <div class="contact" title="Steam">
+        <div
+          class="code"
+          title="Copy Link"
+          onclick="copyText(this)"
+          data-value="steam"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="24px"
+            viewBox="0 -960 960 960"
+            width="24px"
+            fill="#5f6368"
+          >
+            <path
+              d="M360-240q-33 0-56.5-23.5T280-320v-480q0-33 23.5-56.5T360-880h360q33 0 56.5 23.5T800-800v480q0 33-23.5 56.5T720-240H360Zm0-80h360v-480H360v480ZM200-80q-33 0-56.5-23.5T120-160v-560h80v560h440v80H200Zm160-240v-480 480Z"
+            />
+          </svg>
+        </div>
+      </div>
+      <!-- discord -->
+      <div class="contact" title="Discord">
+        <div
+          class="code"
+          title="Copy Link"
+          onclick="copyText(this)"
+          data-value="discord"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="24px"
+            viewBox="0 -960 960 960"
+            width="24px"
+            fill="#5f6368"
+          >
+            <path
+              d="M360-240q-33 0-56.5-23.5T280-320v-480q0-33 23.5-56.5T360-880h360q33 0 56.5 23.5T800-800v480q0 33-23.5 56.5T720-240H360Zm0-80h360v-480H360v480ZM200-80q-33 0-56.5-23.5T120-160v-560h80v560h440v80H200Zm160-240v-480 480Z"
+            />
+          </svg>
+        </div>
+      </div>
+      <!-- Github -->
+      <div class="contact" title="Github">
+        <div
+          class="code"
+          title="Copy Link"
+          onclick="copyText(this)"
+          data-value="github"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="24px"
+            viewBox="0 -960 960 960"
+            width="24px"
+            fill="#5f6368"
+          >
+            <path
+              d="M360-240q-33 0-56.5-23.5T280-320v-480q0-33 23.5-56.5T360-880h360q33 0 56.5 23.5T800-800v480q0 33-23.5 56.5T720-240H360Zm0-80h360v-480H360v480ZM200-80q-33 0-56.5-23.5T120-160v-560h80v560h440v80H200Zm160-240v-480 480Z"
+            />
+          </svg>
+        </div>
+      </div>
+      <!-- Shadow -->
+      <div class="shadow"></div>
+      <div class="copied_link">Copied the text:</div>
+    </section>
+    <footer>
+      <span>2024 © Javascript beginner projects, All Rights Reserved</span>
+    </footer>
+    <script>
+      function copyText(element) {
+        // Get the identifier from the clicked element
+        const identifier = element.getAttribute("data-value");
+        const baseUrl = "www.";
+        const usernames = {
+          facebook: "facebook.com/sabirhusseinbalal",
+          instagram: "instagram.com/sabirhussainbalal",
+          upwork: "upwork.com/freelancers/~014d19ce109591c1de",
+          steam: "steamcommunity.com/id/sabirhussainbalal/",
+          discord: "#sabirhussainbalal",
+          github: "github.com/Sabirhussainbalal",
+        };
+
+        // Get the full URL based on the identifier
+        const copyValue = usernames[identifier];
+
+        // Copy the URL to the clipboard
+        if (copyValue) {
+          navigator.clipboard.writeText(baseUrl + copyValue).catch((err) => {
+            console.error("Error copying text: ", err);
+          });
+          document.querySelector(".copied_link").innerHTML =
+            "Copied the text: " + (baseUrl + copyValue);
+          document.querySelector(".copied_link").style.display = "block";
+          setTimeout(() => {
+            document.querySelector(".copied_link").style.display = "none";
+          }, 2000);
+        }
+      }
+    </script>
+    <script>
+      const elements = document.querySelectorAll(".card, .contact, img");
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              if (entry.target.classList.contains("card")) {
+                entry.target.classList.add("active-card");
+              } else if (entry.target.classList.contains("contact")) {
+                entry.target.classList.add("active-contact");
+              } else if (entry.target.tagName === "IMG") {
+                entry.target.classList.add("active-img");
+              }
+            }
+          });
+        },
+        { threshold: 0.5 }
+      );
+
+      elements.forEach((element) => observer.observe(element));
+    </script>
+  </body>
+</html>

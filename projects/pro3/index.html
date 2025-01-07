@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Percentage Calculator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Italianno&family=Yuji+Mai&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Yuji Mai", serif;
+        font-style: normal;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100vw;
+        height: 100vh;
+        background-image: url(bg.jpeg);
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        font-weight: bolder;
+      }
+
+      .container {
+        /* background: #2a2a2a; */
+        display: flex;
+        align-items: center;
+        border-radius: 25px;
+        padding: 10px;
+        color: white;
+        flex-direction: column;
+        overflow: hidden auto;
+        height: 50vh;
+        width: 60vw;
+      }
+
+      h1 {
+        margin-bottom: 20px;
+        font-size: 1.6rem;
+        animation: bounce 2s infinite ease-in-out;
+      }
+
+      @keyframes bounce {
+        0% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-20px);
+        }
+        100% {
+          transform: translateY(0);
+        }
+      }
+
+      .one,
+      .custom_one {
+        width: 180px;
+        padding: 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      }
+
+      .input {
+        width: 100%;
+        display: flex;
+      }
+
+      .input input {
+        width: 50%;
+      }
+
+      .inputs {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .result {
+        font-weight: normal;
+        font-size: 14px;
+        margin-top: 20px;
+      }
+
+      img {
+        position: absolute;
+        width: 85vw;
+        height: 75vh;
+        animation: bounce 2s infinite ease-in-out;
+      }
+
+      .container button {
+        margin-top: 20px;
+        padding: 5px 10px;
+        font-weight: bolder;
+        cursor: pointer;
+      }
+
+      .blur {
+        filter: blur(10px);
+        opacity: 0.1;
+      }
+
+      .error {
+        border: 2px solid red;
+        background-color: rgba(255, 0, 0, 0.1);
+        color: white;
+        font-weight: bolder;
+      }
+
+      .container button .text {
+        animation: zero 5s infinite ease-in-out;
+        width: 0;
+        overflow: hidden;
+        white-space: nowrap;
+        border-right: 3px solid black;
+      }
+
+      #custom {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        margin: 20px;
+        padding: 5px 10px;
+        cursor: pointer;
+        font-weight: bolder;
+        background-color: white;
+        border: none;
+      }
+
+      .dots {
+        display: none;
+        margin-right: -5px;
+      }
+
+      .dot {
+        display: inline-block;
+        animation: dots 1s ease-in-out infinite;
+        transform-origin: bottom;
+        margin: 0 -2px;
+      }
+
+      .dot:nth-child(1) {
+        animation-delay: 0.2s;
+      }
+
+      .dot:nth-child(2) {
+        animation-delay: 0.4s;
+      }
+
+      .dot:nth-child(3) {
+        animation-delay: 0.6s;
+      }
+
+      .box {
+        position: absolute;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        border-radius: 25px;
+        padding: 10px;
+        color: white;
+        flex-direction: column;
+        overflow: hidden;
+        height: 50vh;
+        width: 60vw;
+        z-index: 2;
+        padding-bottom: 35px;
+      }
+
+      #close {
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin: 10px;
+        padding: 10px 15px;
+        cursor: pointer;
+      }
+
+      #number {
+        padding: 5px 10px;
+        width: 80%;
+      }
+
+      .img {
+        z-index: -1;
+      }
+
+      .customize {
+        background: #ffffff80 !important;
+        cursor: default !important;
+      }
+
+      .buttons {
+        position: absolute;
+        bottom: 0;
+        display: flex;
+        gap: 10px;
+      }
+      .box .next {
+        padding: 5px 10px;
+        cursor: pointer;
+        background: white;
+        font-weight: bolder;
+        border: none;
+      }
+
+      .next:hover {
+        background: #ffffff80;
+      }
+
+      #next_two {
+        display: none;
+      }
+
+      .subjects {
+        gap: 20px;
+        flex-wrap: wrap;
+        overflow: hidden auto;
+        height: 80%;
+        width: 95%;
+        display: flex;
+        justify-content: center;
+      }
+
+      @keyframes dots {
+        0%,
+        80%,
+        100% {
+          transform: translateY(0px);
+        }
+        30% {
+          transform: translateY(-5px);
+        }
+      }
+
+      @keyframes zero {
+        0% {
+          width: 0;
+        }
+
+        50% {
+          width: 100%;
+        }
+
+        100% {
+          width: 0;
+        }
+      }
+
+      @media screen and (max-width: 600px) {
+        h1 {
+          font-size: 16px;
+        }
+
+        .one,
+        .custom_one {
+          font-size: 14px;
+        }
+      }
+
+      @media screen and (max-width: 480px) {
+        body {
+          justify-content: center;
+        }
+
+        img {
+          height: 85vh;
+          width: 98vw;
+        }
+
+        .one,
+        .custom_one {
+          width: 180px;
+          padding: 5px;
+          justify-content: center;
+          align-items: center;
+          flex-direction: column;
+          display: flex;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <img src="frame.png" class="img" alt="" />
+    <div class="container">
+      <h1>Percentage Calculator</h1>
+      <div class="inputs">
+        <!-- 1 Subject -->
+        <div class="one">
+          <span>Physics Marks:</span>
+          <div class="input" id="physics">
+            <input type="number" placeholder="Obtained" id="physicsObtained" />
+            <input type="number" id="physicsTotal" placeholder="Total" />
+          </div>
+        </div>
+        <!-- 2 Subject -->
+        <div class="one">
+          Math Marks:
+          <div class="input" id="math">
+            <input type="number" id="mathObtained" placeholder="Obtained" />
+            <input type="number" id="mathTotal" placeholder="Total" />
+          </div>
+        </div>
+        <!-- 3 Subject -->
+        <div class="one">
+          Chemistry Marks:
+          <div class="input" id="chemistry">
+            <input
+              type="number"
+              id="chemistryObtained"
+              placeholder="Obtained"
+            />
+            <input type="number" id="chemistryTotal" placeholder="Total" />
+          </div>
+        </div>
+        <!-- 4 Subject -->
+        <div class="one">
+          Biology Marks:
+          <div class="input" id="biology">
+            <input type="number" id="biologyObtained" placeholder="Obtained" />
+            <input type="number" id="biologyTotal" placeholder="Total" />
+          </div>
+        </div>
+        <!-- 5 Subject -->
+        <div class="one">
+          Computer Marks:
+          <div class="input" id="computer">
+            <input type="number" id="computerObtained" placeholder="Obtained" />
+            <input type="number" id="computerTotal" placeholder="Total" />
+          </div>
+        </div>
+        <!-- 6 Subject -->
+        <div class="one">
+          English Marks:
+          <div class="input" id="english">
+            <input type="number" id="englishObtained" placeholder="Obtained" />
+            <input type="number" id="englishTotal" placeholder="Total" />
+          </div>
+        </div>
+      </div>
+      <button><div class="text">Calculate</div></button>
+      <div class="result" id="result"></div>
+    </div>
+    <button id="custom">
+      Custom
+      <div class="dots">
+        <div class="dot">.</div>
+        <div class="dot">.</div>
+        <div class="dot">.</div>
+      </div>
+    </button>
+
+    <div class="box">
+      <button id="close">X</button>
+      <!-- Total number of subjects -->
+      <input
+        type="number"
+        name="number"
+        id="number"
+        placeholder="Enter total number of Subjects"
+      />
+      <div class="subjects"></div>
+      <div class="buttons">
+        <button id="reset" class="next">Reset</button>
+        <button id="next_one" class="next">Next</button>
+        <button id="next_two" class="next">Result</button>
+      </div>
+
+      <div class="result" id="cus_result"></div>
+    </div>
+    <script>
+      let button = document.querySelector("button");
+
+      // Reusable validation function
+      function validateMarks(subject, obtainedId, totalId) {
+        const obtained = parseInt(
+          document.getElementById(obtainedId).value,
+          10
+        );
+        const total = parseInt(document.getElementById(totalId).value, 10);
+
+        if (isNaN(obtained) || isNaN(total)) {
+          displayError(
+            `Please enter valid numbers for ${subject}.`,
+            obtainedId,
+            totalId
+          );
+          return null;
+        } else if (obtained > total) {
+          displayError(
+            `Obtained marks cannot be greater than total marks for ${subject}.`,
+            obtainedId,
+            totalId
+          );
+          return null;
+        } else {
+          clearError(obtainedId, totalId);
+          return { obtained, total };
+        }
+      }
+
+      // Display error messages
+      function displayError(message, obtainedId, totalId) {
+        if (document.querySelector(".container").style.display === "none") {
+          //
+          console.log("Container None");
+          document.getElementById("cus_result").textContent = message;
+          console.log(document.getElementById("cus_result"));
+          con;
+          document.getElementById("cus_result").style.color = "red";
+        } else {
+          //
+          console.log("Container Block");
+          document.getElementById("result").textContent = message;
+          document.getElementById("result").style.color = "red";
+        }
+        document.getElementById(obtainedId).classList.add("error");
+        document.getElementById(totalId).classList.add("error");
+      }
+
+      // Clear error highlighting
+      function clearError(obtainedId, totalId) {
+        if (document.querySelector(".container").style.display === "none") {
+          //
+          console.log("Container None");
+          document.getElementById("cus_result").textContent = "";
+        } else {
+          //
+          console.log("Container Block");
+          document.getElementById("result").textContent = "";
+        }
+        document.getElementById(obtainedId).classList.remove("error");
+        document.getElementById(totalId).classList.remove("error");
+      }
+
+      // Button click event
+      button.addEventListener("click", function () {
+        const subjects = [
+          {
+            name: "Physics",
+            obtainedId: "physicsObtained",
+            totalId: "physicsTotal",
+          },
+          { name: "Math", obtainedId: "mathObtained", totalId: "mathTotal" },
+          {
+            name: "Chemistry",
+            obtainedId: "chemistryObtained",
+            totalId: "chemistryTotal",
+          },
+          {
+            name: "Biology",
+            obtainedId: "biologyObtained",
+            totalId: "biologyTotal",
+          },
+          {
+            name: "Computer",
+            obtainedId: "computerObtained",
+            totalId: "computerTotal",
+          },
+          {
+            name: "English",
+            obtainedId: "englishObtained",
+            totalId: "englishTotal",
+          },
+        ];
+
+        let totalObtained = 0;
+        let totalMarks = 0;
+
+        for (const subject of subjects) {
+          const result = validateMarks(
+            subject.name,
+            subject.obtainedId,
+            subject.totalId
+          );
+          if (result === null) return; // Stop calculation if any validation fails
+          totalObtained += result.obtained;
+          totalMarks += result.total;
+        }
+
+        const percentage = ((totalObtained / totalMarks) * 100).toFixed(2);
+        document.getElementById(
+          "result"
+        ).textContent = `You scored ${totalObtained}/${totalMarks} (${percentage}%).`;
+        document.getElementById("result").style.color = "white";
+      });
+
+      // Custom button click event
+      document.getElementById("custom").addEventListener("click", function () {
+        document.getElementById("number").value = "";
+        document.querySelector(".container").classList.add("blur");
+        document.querySelector(".box").style.display = "flex";
+        document.querySelector(".dots").style.display = "inline-block";
+        document.querySelector("#custom").classList.add("customize");
+      });
+
+      document.getElementById("close").addEventListener("click", function () {
+        document.querySelector(".container").classList.remove("blur");
+        document.querySelector(".dots").style.display = "none";
+        document.querySelector(".box").style.display = "none";
+        document.querySelector("#custom").classList.remove("customize");
+      });
+
+      document.getElementById("reset").addEventListener("click", function () {
+        document.getElementById("number").style.display = "block";
+        document.getElementById("next_one").style.display = "block";
+        document.getElementById("next_two").style.display = "none";
+        document.getElementById("number").value = "";
+        document.querySelector(".subjects").innerHTML = "";
+        document.getElementById("number").readOnly = false;
+        document.getElementById("number").style.backgroundColor = "#f0f0f0";
+        document.getElementById("cus_result").textContent = "";
+      });
+
+      document
+        .getElementById("next_one")
+        .addEventListener("click", function () {
+          var subs = document.getElementById("number").value;
+          let numbs = [
+            "First",
+            "Second",
+            "Third",
+            "Fourth",
+            "Fifth",
+            "Sixth",
+            "Seventh",
+            "Eighth",
+            "Ninth",
+          ];
+
+          if (subs === "") {
+            document.getElementById("cus_result").textContent =
+              "Please Enter a valid Number";
+            document.getElementById("cus_result").style.color = "red";
+          } else if (subs < 1 || subs > 9) {
+            document.getElementById("cus_result").textContent =
+              "Subjects Number 1 to 9";
+            document.getElementById("cus_result").style.color = "red";
+          } else {
+            document.getElementById("cus_result").textContent = "";
+
+            for (let i = 1; i <= subs; i++) {
+              document.querySelector(".subjects").innerHTML += `<!-- ${
+                numbs[i - 1]
+              } Subject -->
+        <div class="custom_one">
+          <span> <input type="text" class="${
+            numbs[i - 1]
+          }"  placeholder="Enter ${numbs[i - 1]} Subject Name"/></span>
+          <div class="input" id="${numbs[i - 1]}">
+            <input type="number" placeholder="Obtained" id="${
+              numbs[i - 1]
+            }Obtained" />
+            <input type="number" id="${
+              numbs[i - 1]
+            }Total" placeholder="Total" />
+          </div>
+        </div>
+       `;
+            }
+            document.getElementById("number").readOnly = true;
+            document.getElementById("number").style.backgroundColor = "gray";
+            document.getElementById("next_one").style.display = "none";
+            document.getElementById("next_two").style.display = "block";
+          }
+        });
+
+      document
+        .getElementById("next_two")
+        .addEventListener("click", function () {
+          let numbs = [
+            "First",
+            "Second",
+            "Third",
+            "Fourth",
+            "Fifth",
+            "Sixth",
+            "Seventh",
+            "Eighth",
+            "Ninth",
+          ];
+          var subs = document.getElementById("number").value;
+
+          // Initialize an array to store subjects
+          let subjects = [];
+
+          for (let i = 1; i <= subs; i++) {
+            subjects.push({
+              name: document.querySelector(`.${numbs[i - 1]}`).value, // Assuming the element has an ID matching `numbs[i - 1]`
+              obtainedId: `${numbs[i - 1]}Obtained`,
+              totalId: `${numbs[i - 1]}Total`,
+            });
+          }
+
+          let totalObtained = 0;
+          let totalMarks = 0;
+
+          for (const subject of subjects) {
+            const result = validateMarks(
+              subject.name,
+              subject.obtainedId,
+              subject.totalId
+            );
+            if (result === null) return; // Stop calculation if any validation fails
+            totalObtained += result.obtained;
+            totalMarks += result.total;
+          }
+
+          const percentage = ((totalObtained / totalMarks) * 100).toFixed(2);
+          document.getElementById(
+            "cus_result"
+          ).textContent = `You scored ${totalObtained}/${totalMarks} (${percentage}%).`;
+          document.getElementById("cus_result").style.color = "white";
+        });
+    </script>
+  </body>
+</html>

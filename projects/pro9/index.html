@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Password Generator App</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --current: "0%";
+      }
+
+      body {
+        overflow: hidden;
+        background: rgb(2, 0, 36);
+        background: linear-gradient(
+          90deg,
+          rgba(2, 0, 36, 1) 0%,
+          rgba(9, 9, 121, 1) 35%,
+          rgba(0, 212, 255, 1) 100%
+        );
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: "Poppins", sans-serif;
+      }
+
+      .container {
+        width: 70vw;
+        height: 70vh;
+        color: white;
+        display: flex;
+        align-items: center;
+        background: rgba(2, 0, 36, 0.599);
+        border-radius: 20px;
+        padding: 20px;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      h1 {
+        position: relative;
+        font-size: 1.6rem;
+        background: linear-gradient(
+          90deg,
+          rgb(13, 6, 146) 0%,
+          rgb(209, 209, 225) 35%,
+          rgba(0, 212, 255) 100%
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .dots {
+        position: absolute;
+        right: -22px;
+        font-size: 1.5rem;
+        bottom: 2px;
+      }
+
+      .dot {
+        display: inline-block;
+        animation: dots 1s ease-in-out infinite;
+        transform-origin: bottom;
+        margin: 0 -2px;
+      }
+
+      .dot:nth-child(1) {
+        animation-delay: 0.2s;
+      }
+
+      .dot:nth-child(2) {
+        animation-delay: 0.4s;
+      }
+
+      .dot:nth-child(3) {
+        animation-delay: 0.6s;
+      }
+
+      @keyframes dots {
+        0%,
+        80%,
+        100% {
+          transform: translateY(0px);
+        }
+        30% {
+          transform: translateY(-5px);
+        }
+      }
+
+      .Animation {
+        position: absolute;
+        display: flex;
+        height: 30px;
+      }
+
+      .password {
+        margin-top: 35px;
+      }
+
+      .box {
+        background: rgba(2, 0, 36, 0.414);
+        border-radius: 10px;
+        padding: 10px;
+        width: 80%;
+        text-align: center;
+        font-size: 1rem;
+        font-style: italic;
+        position: relative;
+        height: 35px;
+      }
+
+      #copy {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        margin: 5px;
+        cursor: pointer;
+      }
+
+      .len {
+        display: flex;
+        gap: 5px;
+        font-size: 12px;
+        width: 80%;
+        margin-top: 10px;
+        color: rgba(255, 255, 255, 0.731);
+        position: absolute;
+        top: -25px;
+      }
+
+      #len {
+        color: white;
+      }
+      .card {
+        margin: 20px 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .length {
+        width: 100%;
+        background-color: rgba(255, 255, 255, 0.168);
+        height: 1px;
+        position: relative;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+      }
+
+      .length::before {
+        content: "4";
+        font-size: 12px;
+        left: 0;
+        position: absolute;
+        margin-left: -20px;
+      }
+
+      .length::after {
+        content: "27";
+        font-size: 12px;
+        margin-right: -25px;
+        right: 0;
+        position: absolute;
+      }
+
+      #line {
+        background: white;
+        height: 100%;
+        width: var(--current);
+      }
+
+      #thumb {
+        width: 10px;
+        height: 10px;
+        background: white;
+        border-radius: 50%;
+        position: absolute;
+        left: var(--current);
+        cursor: pointer;
+      }
+
+      .card {
+        padding: 0 40px;
+      }
+
+      .relative {
+        display: flex;
+        justify-content: space-between;
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.75);
+      }
+
+      .btns {
+        display: flex;
+        align-items: center;
+      }
+
+      /*  */
+      .button {
+        display: flex;
+        border: 2px solid #464343;
+        border-radius: 25px;
+        width: 35px;
+        align-items: center;
+        overflow: hidden;
+        height: 20px;
+        cursor: pointer;
+        padding: 1px;
+      }
+
+      .btn {
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        position: absolute;
+        cursor: default;
+        transition: all 0.2s ease-in-out;
+        background-color: #464343;
+      }
+
+      .on {
+        transform: translateX(100%);
+        background: white;
+      }
+
+      /* Base Styles for the Button */
+      #generate_pass {
+        background: linear-gradient(
+          90deg,
+          rgb(13, 6, 146) 0%,
+          rgb(209, 209, 225) 35%,
+          rgba(0, 212, 255, 1) 100%
+        );
+        background-size: 200% 200%;
+        color: white;
+        font-size: 18px;
+        font-weight: bold;
+        padding: 12px 24px;
+        border: none;
+        border-radius: 25px;
+        cursor: pointer;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.4s ease-in-out;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+        position: relative;
+        overflow: hidden;
+        margin: 20px;
+        text-align: center;
+      }
+
+      /* Hover Effect */
+      #generate_pass:hover {
+        background-position: 100% 0;
+        color: rgba(255, 255, 255, 0.9);
+        box-shadow: 0px 6px 10px rgba(0, 212, 255, 0.6);
+        transform: scale(1.05);
+      }
+
+      /* Focus Effect */
+      #generate_pass:focus {
+        outline: none;
+        box-shadow: 0px 0px 15px 3px rgba(0, 212, 255, 0.8);
+        border: 2px solid rgba(0, 212, 255, 0.8);
+      }
+
+      /* Active/Click Effect */
+      #generate_pass:active {
+        transform: scale(0.95);
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
+      }
+
+      /* Animation for Background */
+      @keyframes gradientAnimation {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+
+      /* Adding Animation */
+      #generate_pass {
+        animation: gradientAnimation 3s infinite;
+      }
+
+      /* Notification Styles */
+      #notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: linear-gradient(
+          90deg,
+          rgb(13, 6, 146) 0%,
+          rgb(209, 209, 225) 35%,
+          rgba(0, 212, 255, 1) 100%
+        );
+        color: white;
+        font-size: 16px;
+        padding: 12px 20px;
+        border-radius: 8px;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+        opacity: 0;
+        transform: translateY(-20px);
+        transition: all 0.4s ease;
+        pointer-events: none;
+        z-index: 9999;
+      }
+
+      /* Show Notification */
+      #notification.show {
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto;
+      }
+
+      @media screen and (max-width: 600px) {
+        html {
+          font-size: 62.5%;
+        }
+
+        #generate_pass {
+          font-size: 14px;
+          padding: 8px 16px;
+        }
+
+        .dots {
+          right: -10px;
+          bottom: 10px;
+        }
+
+        .len {
+          font-size: 10px;
+        }
+        .length::after {
+          font-size: 11px;
+        }
+        .length::before {
+          font-size: 11px;
+        }
+
+        .relative {
+          font-size: 11px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="notification"></div>
+
+    <div class="container">
+      <div class="Animation">
+        <h1>Password Generator</h1>
+        <div class="dots">
+          <div class="dot">.</div>
+          <div class="dot">.</div>
+          <div class="dot">.</div>
+        </div>
+      </div>
+      <!-- Password -->
+      <div class="box password">
+        <!-- Password -->
+        <div id="password"></div>
+        <div id="copy">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="24px"
+            viewBox="0 -960 960 960"
+            width="24px"
+            fill="#FFFFFF"
+          >
+            <path
+              d="M360-240q-33 0-56.5-23.5T280-320v-480q0-33 23.5-56.5T360-880h360q33 0 56.5 23.5T800-800v480q0 33-23.5 56.5T720-240H360Zm0-80h360v-480H360v480ZM200-80q-33 0-56.5-23.5T120-160v-560h80v560h440v80H200Zm160-240v-480 480Z"
+            />
+          </svg>
+        </div>
+      </div>
+
+      <div class="box card">
+        <!-- Length -->
+        <div class="len">
+          Length:
+          <div id="len">4</div>
+        </div>
+        <div class="length">
+          <div id="line"></div>
+          <div id="thumb"></div>
+        </div>
+      </div>
+      <!-- Upper -->
+      <div class="box relative">
+        <div class="title">Include Uppercase</div>
+        <!-- upper case on off button -->
+        <div class="button">
+          <div class="btn" id="upper"></div>
+        </div>
+      </div>
+      <!-- Number -->
+      <div class="box relative">
+        <div class="title">Include Numbers</div>
+        <!-- number case on off button -->
+        <div class="button">
+          <div class="btn" id="number"></div>
+        </div>
+      </div>
+      <!-- Symbols -->
+      <div class="box relative">
+        <div class="title">Include Symbols</div>
+        <!-- symbols case on off button -->
+        <div class="button">
+          <div class="btn" id="symbol"></div>
+        </div>
+      </div>
+      <!-- Button -->
+
+      <button id="generate_pass">Generate Password</button>
+    </div>
+    <script>
+      const thumb = document.getElementById("thumb");
+      const line = document.getElementById("line");
+      const lengthBar = document.querySelector(".length");
+      const root = document.documentElement;
+
+      let isDragging = false;
+      let uppercase = false;
+      let number = false;
+      let symbol = false;
+
+      thumb.addEventListener("mousedown", (e) => {
+        isDragging = true; // Enable dragging
+      });
+
+      document.addEventListener("mouseup", () => {
+        isDragging = false; // Disable dragging when mouse is released
+      });
+
+      document.addEventListener("mousemove", (e) => {
+        if (isDragging) {
+          // Get the bounding box of the length bar
+          const rect = lengthBar.getBoundingClientRect();
+
+          // Calculate the new percentage based on mouse position
+          let percentage = ((e.clientX - rect.left) / rect.width) * 100;
+
+          // Clamp the percentage between 0 and 100
+          percentage = Math.max(0, Math.min(percentage, 100));
+
+          // Update CSS variable and element styles
+          root.style.setProperty("--current", `${percentage}%`);
+          line.style.width = `${percentage}%`;
+          thumb.style.left = `${percentage}%`;
+
+          levelset(percentage);
+        }
+      });
+
+      lengthBar.addEventListener("click", (e) => {
+        const rect = lengthBar.getBoundingClientRect();
+
+        // Calculate the percentage based on the mouse click position
+        let percentage = ((e.clientX - rect.left) / rect.width) * 100;
+
+        // Clamp the percentage between 0 and 100
+        percentage = Math.max(0, Math.min(percentage, 100));
+
+        // Update CSS variable and element styles
+        root.style.setProperty("--current", `${percentage}%`);
+        line.style.width = `${percentage}%`;
+        thumb.style.left = `${percentage}%`;
+
+        levelset(percentage);
+      });
+
+      const levelset = (percentage) => {
+        const minLevel = 4; // Starting level
+        const maxLevel = 27; // Maximum level
+        const totalLevels = maxLevel - minLevel + 1; // Total levels
+        const increment = 100 / totalLevels; // Percentage increment per level
+
+        // Calculate the level dynamically
+        const level = Math.min(
+          maxLevel,
+          Math.floor(percentage / increment) + minLevel
+        );
+
+        // Update the length element with the calculated level
+        document.getElementById("len").textContent = level;
+      };
+
+      // Upper Case Random Alphabet Generator
+      const upperCaseAlphabet = () => {
+        const randomAlphabet = String.fromCharCode(
+          65 + Math.floor(Math.random() * 26)
+        ); // Random letter A-Z
+        return randomAlphabet;
+      };
+
+      // Random Number Generator
+      const randomNum = () => {
+        const randomNum = Math.floor(Math.random() * 10); // Random number 0-9
+        return randomNum;
+      };
+
+      // Random Symbol Character Generator
+      const randomSymbol = () => {
+        const randomSymbol = "!@#$%&*".charAt(Math.floor(Math.random() * 6));
+        return randomSymbol;
+      };
+
+      // Random Small Alphabet Generator
+      const smallAlphabet = () => {
+        const randomAlphabet = String.fromCharCode(
+          97 + Math.floor(Math.random() * 26)
+        ); // Random letter a-z
+        return randomAlphabet;
+      };
+
+      // On/off
+      document.addEventListener("click", (event) => {
+        const target = event.target;
+
+        // Check if the clicked element has the 'button' class
+        if (target.classList.contains("button")) {
+          // Find the child element with the 'btn' class
+          const btn_switch = target.querySelector(".btn");
+          if (btn_switch) {
+            // Toggle the corresponding state based on the 'id' of the 'btn'
+            let id = btn_switch.id;
+            if (id === "upper") {
+              uppercase = !uppercase;
+            } else if (id === "number") {
+              number = !number;
+            } else if (id === "symbol") {
+              symbol = !symbol;
+            }
+
+            btn_switch.classList.toggle("on");
+          } else {
+            console.log("No child element with class 'btn' found");
+          }
+        }
+      });
+
+      // Generate Password
+      const generatePassword = () => {
+        let password = "";
+        let pas_lenth = document.getElementById("len").textContent;
+        pas_lenth = parseInt(pas_lenth);
+
+        for (let i = 0; i < pas_lenth; i++) {
+          let ran = Math.floor(Math.random() * 4);
+          if (ran === 0) {
+            password += smallAlphabet();
+          } else if (ran === 1) {
+            if (uppercase) {
+              password += upperCaseAlphabet();
+            } else {
+              password += smallAlphabet();
+            }
+          } else if (ran === 2) {
+            if (number) {
+              password += randomNum();
+            } else {
+              password += smallAlphabet();
+            }
+          } else if (ran === 3) {
+            if (symbol) {
+              password += randomSymbol();
+            } else {
+              password += smallAlphabet();
+            }
+          }
+        }
+        document.getElementById("password").textContent = password;
+      };
+
+      document.getElementById("generate_pass").addEventListener("click", () => {
+        generatePassword();
+      });
+
+      function showNotification(msg) {
+        const notification = document.getElementById("notification");
+        notification.textContent = msg; // Set the message
+        notification.classList.add("show"); // Show the notification
+
+        // Hide after 3 seconds
+        setTimeout(() => {
+          notification.classList.remove("show");
+        }, 3000);
+      }
+
+      function Copy() {
+        // Get the text content of the element
+        var copyText = document.getElementById("password").textContent;
+
+        // Create a temporary textarea element
+        var tempInput = document.createElement("textarea");
+        tempInput.value = copyText;
+        document.body.appendChild(tempInput);
+
+        // Select and copy the text from the temporary textarea
+        tempInput.select();
+        tempInput.setSelectionRange(0, 99999); // For mobile devices
+        navigator.clipboard.writeText(tempInput.value);
+
+        // Remove the temporary textarea
+        document.body.removeChild(tempInput);
+
+        // Alert the copied text
+        showNotification(copyText);
+      }
+
+      document.getElementById("copy").addEventListener("click", () => {
+        Copy();
+      });
+    </script>
+  </body>
+</html>

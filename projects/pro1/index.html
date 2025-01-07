@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Life Timer</title>
+    <link rel="shortcut icon" href="1.jpg" type="image/x-icon" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=calendar_month"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        overflow: hidden;
+        background-image: url("1.jpg");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+      }
+      .container,
+      .box {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100vw;
+        height: 100vh;
+        color: black;
+        flex-direction: column;
+      }
+      .text {
+        font-size: 3rem;
+        font-weight: bold;
+        text-shadow: 10px 10px 10px black;
+      }
+      .dates {
+        display: flex;
+        gap: 30px;
+      }
+      .date {
+        display: flex;
+        flex-direction: column;
+      }
+      .format {
+        font-size: 2.5rem;
+        font-weight: bold;
+      }
+      .dt {
+        font-size: 2rem;
+        font-weight: bold;
+      }
+      .container {
+        display: none;
+      }
+      .icons {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        margin: 20px;
+        cursor: pointer;
+        display: flex;
+        gap: 5px;
+      }
+      .icons button {
+        padding: 5px 10px;
+        border-radius: 10px;
+        background: rgba(0, 128, 0, 0.631);
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: all 1s ease-in-out;
+        width: 100px;
+      }
+      .icons button:hover {
+        background-color: green;
+        font-weight: bold;
+        border: 2px solid green;
+      }
+      .hide {
+        display: none;
+      }
+      form {
+        display: flex;
+        gap: 5px;
+      }
+      @media screen and (max-width: 900px) {
+        html {
+          font-size: 70%;
+        }
+      }
+      @media screen and (max-width: 600px) {
+        html {
+          font-size: 40%;
+        }
+      }
+      @media screen and (max-width: 400px) {
+        html {
+          font-size: 30%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="text">How Much Life Journey Covered, Till Now</div>
+      <div class="dates">
+        <div class="date">
+          <span class="dt year"></span> <span class="format">Years</span>
+        </div>
+        <div class="date">
+          <span class="dt month"></span> <span class="format">Months</span>
+        </div>
+        <div class="date">
+          <span class="dt day"></span> <span class="format">Days</span>
+        </div>
+        <div class="date">
+          <span class="dt hour"></span> <span class="format">Hours</span>
+        </div>
+        <div class="date">
+          <span class="dt min"></span> <span class="format">Minutes</span>
+        </div>
+        <div class="date">
+          <span class="dt sec"></span> <span class="format">Seconds</span>
+        </div>
+      </div>
+    </div>
+    <div class="box">
+      <div class="text">Kindly Enter Your Date Of Birth</div>
+    </div>
+    <div class="icons">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        height="40px"
+        viewBox="0 -960 960 960"
+        width="40px"
+        fill="#000000"
+        title="Enter Date Of Birth"
+        class="svg open"
+      >
+        <path
+          d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Zm280 240q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z"
+        />
+      </svg>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        height="40px"
+        viewBox="0 -960 960 960"
+        width="40px"
+        fill="#000000"
+        class="hide x"
+      >
+        <path
+          d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"
+        />
+      </svg>
+      <form action="" id="dateForm">
+        <input type="date" name="date" id="date" class="hide" />
+        <button class="hide" type="submit">Submit</button>
+      </form>
+    </div>
+    <script>
+      document.querySelector(".open").addEventListener("click", () => {
+        document.querySelectorAll(".hide").forEach((element) => {
+          element.style.display = "block";
+        });
+        document.querySelector(".open").style.display = "none";
+      });
+      document.querySelector(".x").addEventListener("click", () => {
+        document.querySelectorAll(".hide").forEach((element) => {
+          element.style.display = "none";
+        });
+        document.querySelector(".open").style.display = "block";
+      });
+    </script>
+    <script>
+      const dateForm = document.querySelector("#dateForm");
+      let timerInterval;
+
+      dateForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+        let DOB = document.querySelector("#date").value;
+        const dateOfBirth = new Date(DOB);
+        const currentDate = new Date();
+
+        function updateTimer() {
+          const now = new Date();
+          const ageInSeconds = Math.floor((now - dateOfBirth) / 1000);
+          const years = Math.floor(ageInSeconds / (365.25 * 24 * 60 * 60));
+          const months = Math.floor(
+            (ageInSeconds % (365.25 * 24 * 60 * 60)) / (30 * 24 * 60 * 60)
+          );
+          const days = Math.floor(
+            (ageInSeconds % (30 * 24 * 60 * 60)) / (24 * 60 * 60)
+          );
+          const hours = Math.floor((ageInSeconds % (24 * 60 * 60)) / (60 * 60));
+          const minutes = Math.floor((ageInSeconds % (60 * 60)) / 60);
+          const seconds = ageInSeconds % 60;
+
+          document.querySelector(".year").textContent = years;
+          document.querySelector(".month").textContent = months;
+          document.querySelector(".day").textContent = days;
+          document.querySelector(".hour").textContent = hours;
+          document.querySelector(".min").textContent = minutes;
+          document.querySelector(".sec").textContent = seconds;
+        }
+
+        clearInterval(timerInterval); // Clear any existing timer
+        timerInterval = setInterval(updateTimer, 1000); // Update every second
+
+        document.querySelector(".container").style.display = "flex";
+        document.querySelector(".box").style.display = "none";
+        document.getElementsByTagName("body")[0].style.backgroundImage =
+          "url('2.jpg')";
+        updateTimer(); // Initial call to display immediately
+      });
+    </script>
+  </body>
+</html>

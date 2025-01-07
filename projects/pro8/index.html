@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Expence Tracker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=arrow_drop_down"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        overflow: hidden;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: "Poppins", serif;
+        background-image: url("bg.avif");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+      }
+
+      .bg {
+        position: absolute;
+        width: 100vw;
+        height: 100vh;
+        background-color: black;
+        opacity: 0.9;
+        filter: blur(90px);
+      }
+      .card {
+        width: 50vw;
+        height: 90vh;
+        background-color: #333;
+        z-index: 2;
+        position: relative;
+        box-shadow: 0px 0px 20px 7px black;
+        transition: all 0.5s ease-in-out;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        color: #ffffff;
+        gap: 15px;
+        padding: 10px;
+        font-size: 1rem;
+        overflow: hidden;
+      }
+
+      .card:hover {
+        box-shadow: 0px 0px 20px 7px white;
+        transform: scale(1.1);
+      }
+
+      .amount {
+        text-align: center;
+      }
+
+      .transactions {
+        text-align: start;
+        width: 100%;
+        border-bottom: 1px solid white;
+      }
+
+      .boxes {
+        width: 96%;
+        height: 48%;
+        font-size: 0.9rem;
+        overflow: hidden scroll;
+        border-top: 1px solid white;
+        border-bottom: 1px solid white;
+      }
+
+      .box {
+        width: 100%;
+        height: 30px;
+        background-color: white;
+        color: black;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        margin: 10px 0;
+        transition: height 0.3s ease; /* Optional: Smooth transition */
+      }
+
+      .box.expanded {
+        height: 60px !important;
+      }
+
+      .up {
+        height: 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-left: 5px;
+      }
+
+      .last {
+        display: flex;
+        align-items: center;
+      }
+      .amountt {
+        padding: 0 5px;
+      }
+
+      .status svg {
+        pointer-events: all;
+      }
+      .status {
+        background-color: black;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        cursor: pointer;
+        z-index: 5;
+      }
+
+      .red {
+        background-color: red !important;
+      }
+
+      .green {
+        background-color: green !important;
+      }
+
+      .down {
+        display: flex;
+        width: 100%;
+        height: 30px;
+        background-color: white;
+      }
+      .close {
+        width: 100%;
+        height: 100%;
+      }
+
+      .form {
+        position: absolute;
+        bottom: 0;
+        padding: 10px;
+        background-color: white;
+        color: black;
+        width: 100%;
+        font-size: 0.8rem;
+      }
+
+      .data {
+        display: flex;
+        gap: 10px;
+        width: 100%;
+        justify-content: center;
+      }
+
+      .text,
+      .amountis {
+        display: flex;
+        flex-direction: column;
+        width: 45%;
+      }
+
+      input:focus {
+        outline: none;
+      }
+
+      .inp,
+      .amountt {
+        padding: 5px;
+        border: 1px solid #333;
+      }
+      .inp:hover,
+      .amountt:hover {
+        border: 2px solid #333;
+      }
+      .btns {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 30px;
+        margin: 10px 0;
+      }
+
+      .btn {
+        width: 50%;
+        color: white;
+        padding: 5px;
+        cursor: pointer;
+      }
+
+      button {
+        border: none;
+        font-weight: bold;
+      }
+
+      button:hover {
+        transform: scale(1.1);
+      }
+
+      .red_error {
+        border: 2px solid red !important;
+      }
+
+      /* max media query */
+      @media screen and (max-width: 650px) {
+        .card {
+          width: 90vw;
+        }
+      }
+
+      .last .amount {
+        margin-right: 5px;
+      }
+
+      .hide {
+        display: none !important;
+      }
+      lord-icon {
+        cursor: default;
+      }
+
+      .edit,
+      .delete {
+        cursor: pointer;
+        width: 50%;
+        border: 1px solid #333;
+        text-align: center;
+        position: relative;
+        z-index: 1000 !important;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <!-- title -->
+      <div class="title">Expence Tracker</div>
+      <!-- sub -->
+      <div class="sub">
+        <div class="balance">Your Balance</div>
+        <div class="amount">$0.00</div>
+      </div>
+
+      <!-- Transactions -->
+      <div class="transactions">Transactions</div>
+      <div class="boxes"></div>
+      <div class="form">
+        <div class="add">Add Transaction</div>
+        <div class="data">
+          <div class="text">
+            <label for="text">Text</label>
+            <input type="text" class="inp" id="text" placeholder="Enter Text" />
+          </div>
+          <div class="amountis">
+            <label for="amount">Amount</label>
+            <input
+              type="number"
+              class="inp"
+              id="amount"
+              placeholder="Enter Amount"
+            />
+          </div>
+        </div>
+        <div class="btns">
+          <button id="earn" class="btn green">0$<br />Earning</button>
+          <button id="exp" class="btn red">0$<br />Expence</button>
+        </div>
+      </div>
+    </div>
+    <div class="bg"></div>
+    <script src="https://cdn.lordicon.com/lordicon.js"></script>
+    <script>
+      let balance = 0;
+      let text;
+      let amount;
+      const buttons = document.querySelectorAll(".btn");
+
+      // Fix Amount inpt
+      const amountInput = document.getElementById("amount");
+
+      amountInput.addEventListener("input", () => {
+        // Remove non-digit characters from the input
+        amountInput.value = amountInput.value.replace(/\D/g, "");
+
+        // Provide feedback if invalid input was entered (optional)
+        if (amountInput.value.trim() === "") {
+          console.log("Invalid input: non-digit characters removed.");
+        }
+      });
+
+      function generateId() {
+        return Date.now() + "-" + Math.floor(Math.random() * 1000);
+      }
+
+      const append = (id) => {
+        let amountis;
+        let status;
+        if (id == "earn") {
+          balance = balance + parseInt(amount);
+          document.querySelector(".amount").textContent = `$${balance}`;
+          amountis = `+ $${amount}`;
+          status = "green";
+        } else if (id == "exp") {
+          balance = balance - parseInt(amount);
+          document.querySelector(".amount").textContent = `$${balance}`;
+          amountis = `- $${amount}`;
+          status = "red";
+        }
+
+        let box = `
+               <div class="box">
+          <!-- up -->
+          <div class="up">
+            <div class="first">${text}</div>
+            <div class="last">
+              <div class="amount">${amountis}</div>
+              <div  class="status ${status}" id="${generateId()}">
+                <!-- SVGs are included, but they are part of the clickable .status div -->
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF" class="open">
+                  <path d="M480-360 280-560h400L480-360Z"></path>
+                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF" class="close hide">
+                  <path d="m280-400 200-200 200 200H280Z"></path>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <!-- Down -->
+          <div class="down">
+            <!-- <lord-icon> tag should be properly closed -->
+            <div class="edit">
+              <lord-icon src="https://cdn.lordicon.com/wkvacbiw.json" trigger="hover" style="width: 25px; height: 25px">
+              </lord-icon> 
+            </div>
+            <div class="delete">
+              <lord-icon src="https://cdn.lordicon.com/skkahier.json" trigger="hover" style="width: 25px; height: 25px">
+              </lord-icon> 
+            </div>
+          </div>
+        </div>`;
+
+        document.querySelector(".boxes").innerHTML += box;
+      };
+
+      // Append Child
+
+      // Add Transaction
+      const add = (id) => {
+        text = document.getElementById("text").value;
+        amount = document.getElementById("amount").value;
+        amount.trim();
+
+        if (!text) {
+          document.getElementById("text").classList.add("red_error");
+        } else {
+          document.getElementById("text").classList.remove("red_error");
+        }
+
+        if (!amount) {
+          document.getElementById("amount").classList.add("red_error");
+        } else {
+          document.getElementById("amount").classList.remove("red_error");
+        }
+
+        if (text && amount) {
+          document.getElementById("text").value = "";
+          document.getElementById("amount").value = "";
+          append(id);
+        }
+      };
+
+      for (let button of buttons) {
+        button.addEventListener("click", () => {
+          add(button.id);
+          addClickListenerToStatuses();
+        });
+      }
+
+      document.addEventListener("click", (event) => {
+        const target = event.target;
+
+        function updateBalance(amountStr) {
+          let amount = amountStr.trim();
+          if (amount[0] === "-") {
+            amount = parseInt(amount.replace(/\D/g, ""), 10);
+            balance += amount;
+          } else {
+            amount = parseInt(amount.replace(/\D/g, ""), 10);
+            balance -= amount;
+          }
+          document.querySelector(".amount").textContent = `$${balance}`;
+        }
+
+        if (target.classList.contains("delete")) {
+          const parentBox = target.closest(".box");
+          const amount = parentBox.querySelector(".amount").innerHTML;
+          updateBalance(amount);
+          parentBox.remove();
+        } else if (target.classList.contains("edit")) {
+          const parentBox = target.closest(".box");
+          const amount = parentBox.querySelector(".amount").innerHTML;
+          updateBalance(amount);
+          const first = parentBox.querySelector(".first").innerHTML;
+          document.getElementById("text").value = first;
+          document.getElementById("amount").value = amount.replace(/\D/g, "");
+          parentBox.remove();
+        }
+      });
+
+      function addClickListenerToStatuses() {
+        // Select all elements with the class "status"
+        const statuses = document.querySelectorAll(".status");
+
+        // Add a click event listener to each 'status' element
+        statuses.forEach((status) => {
+          status.addEventListener("click", (event) => {
+            // Prevent event from bubbling up if it's clicked on a nested element like SVG
+            event.stopPropagation();
+
+            // Get the id of the clicked element
+            const clickedId = event.currentTarget.id;
+
+            const parentBox = status.closest(".box");
+
+            // Find the `status` container
+            const statusContainer = status.closest(".status");
+
+            if (parentBox && statusContainer) {
+              const opensvg = statusContainer.querySelector(".open");
+              const closesvg = statusContainer.querySelector(".close");
+
+              if (opensvg && closesvg) {
+                // Check if the "expanded" class is present
+                if (parentBox.classList.contains("expanded")) {
+                  // Remove the "expanded" class
+                  parentBox.classList.remove("expanded");
+                  opensvg.classList.remove("hide");
+                  closesvg.classList.add("hide");
+                } else {
+                  // Add the "expanded" class
+                  parentBox.classList.add("expanded");
+                  opensvg.classList.add("hide");
+                  closesvg.classList.remove("hide");
+                }
+              } else {
+                console.log(
+                  "Open or close SVG not found in the current context."
+                );
+              }
+            } else {
+              console.log(
+                "No parent with the class 'box' found or invalid status container."
+              );
+            }
+          });
+        });
+      }
+    </script>
+  </body>
+</html>
