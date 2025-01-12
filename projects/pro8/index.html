@@ -232,6 +232,7 @@
       }
       lord-icon {
         cursor: default;
+        z-index: -1;
       }
 
       .edit,
@@ -276,13 +277,18 @@
           </div>
         </div>
         <div class="btns">
-          <button id="earn" class="btn green">0$<br />Earning</button>
-          <button id="exp" class="btn red">0$<br />Expence</button>
+          <button id="earn" class="btn green">
+            <span class="total_earn">0$</span>
+            <br />Earning
+          </button>
+          <button id="exp" class="btn red">
+            <span class="total_exp">0$</span><br />Expence
+          </button>
         </div>
       </div>
     </div>
     <div class="bg"></div>
     <script src="https://cdn.lordicon.com/lordicon.js"></script>
-     <script src="app.js"></script>
+    <script src="app.js"></script>
   </body>
 </html>

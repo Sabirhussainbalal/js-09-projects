@@ -1,6 +1,8 @@
-  let balance = 0;
+     let balance = 0;
       let text;
       let amount;
+      let total_earn_is = 0
+      let total_exp_is = 0
       const buttons = document.querySelectorAll(".btn");
 
       // Fix Amount inpt
@@ -24,11 +26,15 @@
         let amountis;
         let status;
         if (id == "earn") {
+          total_earn_is = total_earn_is + parseInt(amount);
+          document.querySelector(".total_earn").textContent = `$${total_earn_is}`;
           balance = balance + parseInt(amount);
           document.querySelector(".amount").textContent = `$${balance}`;
           amountis = `+ $${amount}`;
           status = "green";
         } else if (id == "exp") {
+          total_exp_is = total_exp_is + parseInt(amount);
+          document.querySelector(".total_exp").textContent = `$${total_exp_is}`;
           balance = balance - parseInt(amount);
           document.querySelector(".amount").textContent = `$${balance}`;
           amountis = `- $${amount}`;
@@ -112,11 +118,16 @@
           if (amount[0] === "-") {
             amount = parseInt(amount.replace(/\D/g, ""), 10);
             balance += amount;
+            total_exp_is = total_exp_is - amount
           } else {
             amount = parseInt(amount.replace(/\D/g, ""), 10);
             balance -= amount;
+            total_earn_is = total_earn_is - amount
+      
           }
           document.querySelector(".amount").textContent = `$${balance}`;
+          document.querySelector(".total_earn").textContent = `$${total_earn_is}`;
+          document.querySelector(".total_exp").textContent = `$${total_exp_is}`;
         }
 
         if (target.classList.contains("delete")) {
