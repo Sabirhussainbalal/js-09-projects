@@ -56,13 +56,9 @@ To view these projects locally:
    git clone https://github.com/sabirhussainbalal/js-09-projects.git
    ```
 
-2. Navigate to the project directory:
 
-   ```bash
-   cd js-09-projects
-   ```
 
-3. Open any project folder and launch the `index.html` file in your browser.
+2. Open any project folder and launch the `index.html` file in your browser.
 
 ## Repository Details
 
